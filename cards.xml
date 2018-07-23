@@ -1,0 +1,30 @@
+<deck>
+  <Hazard>
+    <Accident value="0" count="3" name="Accident" ></Accident>
+    <Empty_tank value="0" count="3" name="Out of Gas"></Empty_tank>
+    <Flat value="0" count="3" name="Flat Tire"></Flat>
+    <Stop value="0" count="5" name="Stop!"></Stop>
+    <Limit value="0" count="4" name="Speed Limit 50"></Limit>
+  </Hazard>
+  <Remedy>
+    <Repairs value="0" count="6" name="Repairs"></Repairs>
+    <Gas value="0" count="6" name="Gasoline" ></Gas>
+    <Spare value="0" count="6" name="Spare Tire"></Spare>
+    <Go value="0" count="14" name="Go!"></Go>
+    <LimitEnd value="0" count="6" name="End of Speed Limit"></LimitEnd>
+  </Remedy>
+  <Safety>
+    <Ace value="0" count="1" name="Driving Ace"></Ace>
+    <ExtraTank value="0" count="1" name="Extra Tank of Gas"></ExtraTank>
+    <PunctureProof value="0" count="1" name="Puncture Proof Tires"></PunctureProof>
+    <RightOfWay value="0" count="1" name="Right of Way"></RightOfWay>
+  </Safety>
+  <Distance>
+    <Mile value="25" count="10" name="Distance"></Mile>
+    <Mile value="50" count="10" name="Distance"></Mile>
+    <Mile value="75" count="10" name="Distance"></Mile>
+    <Mile value="100" count="12" name="Distance"></Mile>
+    <Mile value="200" count="4" name="Distance"></Mile>
+  </Distance>
+</deck>
+
