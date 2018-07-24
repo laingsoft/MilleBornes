@@ -40,7 +40,7 @@ class Player:
         if card.category == "Hazard":
             if opponent == None:
                 print("Choose an Opponent ")
-                ret = self.add_to_go_pile(card)
+                ret = opponent.add_to_go_pile(card)
             else:
                 ret = opponent.add_to_go_pile(card)
         elif card.category == "Remedy":
@@ -96,7 +96,7 @@ class Player:
        return 1
        
     def add_milestone(self, card):
-        if self.go_pile.subtype == "Go" and card.category == "Distance":
+        if self.go_pile != None and card.category == "Distance":
             if self.limit and (not "RightOfWay" in self.safeties):
                 if card.value > 50:
                     return 0
@@ -137,6 +137,49 @@ class Util:
                     cards.append(newCard)
         return cards
 
+    def Valid_move(player1, card, opponent=None):
+        if opponent != None:
+            if card.category != "Hazard":
+                return False
+            else:
+                if opponent.go_pile.subtype != "Go":
+                    return False
+                if SAFTIES[card.subtype] in opponent.safeties:
+                    return False
+        else:
+            if card.category == "Remedy":
+                if player1.go_pile == None:
+                    if card.subtype == "Go":
+                        return True
+                    else:
+                        return False
+                if REMEDIES[player1.go_pile.subtype] == card.subtype:
+                    return True
+                else:
+                    return False
+                if card.subtype == "LimitEnd":
+                    if player1.limit:
+                        return True
+                    else:
+                        return False
+            elif card.category == "Distance":
+                if player1.go_pile == None:
+                    return False
+                if player1.go_pile.subtype != "Go":
+                    return False
+                if player1.limit:
+                    if card.value > 50:
+                        return False
+                    else:
+                        return True
+                    
+            else:
+                return True
+        return True
+                
+                    
+                
+
 
 
 
@@ -158,15 +201,26 @@ def main():
         #print(i.cards)
 
     while True:
-        print(players[0])
-        players[0].draw(deck)
-        print(players[0].cards)
-        line = input("?")
-        line = list(line)
-        if line[0] == "p":
-            players[0].play(int(line[1]))
-        elif line[0] == "d":
-            players[0].cards.remove(players[0].cards[int(line[1])])
+        for player in players:
+            print(player)
+            player.draw(deck)
+            print(player.cards)
+            line = input("?")
+            line = list(line)
+            if line[0] == "p":
+                if player.cards[int(line[1])].category == "Hazard":
+                    opponent = players[int(input("Which Opponent?"))]
+                    if Util.Valid_move(player, player.cards[int(line[1])], opponent):
+                        player.play(int(line[1]), opponent)
+                    else:
+                        print("INVALID MOVE")
+                else:
+                    if Util.Valid_move(player, player.cards[int(line[1])]):
+                        player.play(int(line[1]))
+                    else:
+                        print("INVALID MOVE")
+            elif line[0] == "d":
+                player.cards.remove(player.cards[int(line[1])])
         
                 
                 
