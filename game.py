@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as ET
-from random import shuffle
+from random import shuffle, choice, randint
 
 REMEDIES = {"Accident":"Repairs", "Empty_tank":"Gas", "Flat":"Spare"}
 SAFETIES = {"Accident":"Ace", "Empty_tank":"ExtraTank", "Flat":"PunctureProof", "RightOfWay":"Stop"}
@@ -115,12 +115,6 @@ class Player:
         return 0
     
 
-class Game:
-    def __init__(self, players, teams, deck):
-        self.players = players
-        self.teams = teams
-        self.deck = deck
-
 
 class Util:
     def newDeck():
@@ -178,52 +172,39 @@ class Util:
         return True
                 
                     
-                
+class Game:
+    def __init__(self, players, teams, deck, target_score):
+        self.players = players
+        self.teams = teams
+        shuffle(deck)
+        self.deck = deck
+        self.current_player = randint(0,len(players)-1)
+        self.target_score = target_score
+
+        #initialize gamestate
+        self.start_game()
+    def start_game(self):
+        for i in self.players:
+            for y in range(5):
+                i.cards.append(self.deck.pop())
+
+    def get_player(self, num):
+        return self.players[num]
+    
+    def get_player_by_name(self, name):
+        ret = None
+        for i in self.players:
+            if i.name.lower() == name.lower():
+                ret = i
+        return ret
+
+    def get_current_player(self):
+        return self.players[self.current_player]
+    
+    def advance_turn(self):
+        self.current_player = (self.current_player+1) % len(self.players)-1
 
 
 
 
-def main():
-    num_players = input("Number of Players? ")
-    players = []
-    for i in range(0,int(num_players)):
-        name = input("Name? ")
-        team = input("Team? ")
-        players.append(Player(name, team))
-    print(players)
 
-    deck = Util.newDeck()
-    shuffle(deck)
-    #deal out
-    for i in players:
-        for y in range(6):
-            i.cards.append(deck.pop())
-        #print(i.cards)
-
-    while True:
-        for player in players:
-            print(player)
-            player.draw(deck)
-            print(player.cards)
-            line = input("?")
-            line = list(line)
-            if line[0] == "p":
-                if player.cards[int(line[1])].category == "Hazard":
-                    opponent = players[int(input("Which Opponent?"))]
-                    if Util.Valid_move(player, player.cards[int(line[1])], opponent):
-                        player.play(int(line[1]), opponent)
-                    else:
-                        print("INVALID MOVE")
-                else:
-                    if Util.Valid_move(player, player.cards[int(line[1])]):
-                        player.play(int(line[1]))
-                    else:
-                        print("INVALID MOVE")
-            elif line[0] == "d":
-                player.cards.remove(player.cards[int(line[1])])
-        
-                
-                
-if __name__ == "__main__":
-    main()
-        
