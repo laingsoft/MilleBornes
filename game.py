@@ -202,8 +202,7 @@ class Game:
         return self.players[self.current_player]
     
     def advance_turn(self):
-        self.current_player = (self.current_player+1) % len(self.players)-1
-
+        self.current_player = (self.current_player+1) % len(self.players)
 
 
 
